@@ -10,7 +10,9 @@ import UIKit
 
 class NotesViewController: UIViewController {
     
-    var notesArray = [String]()
+    var notes = [Note]()
+    
+    let dataController = DataController()
     
     @IBOutlet weak var notesTable: UITableView!
     
@@ -20,33 +22,20 @@ class NotesViewController: UIViewController {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
         
+        dataController.delegate = self
         
     }
-
 
     @IBAction func composeButton(_ sender: Any) {
-        
-      addNote()
-     
+        performSegue(withIdentifier: "EditNoteSegue", sender: nil)
     }
     
-    func addNote() {
-        
-        let note = "note" + "\(notesArray.count + 1)"
-        notesArray.append(note)
-        notesTable.reloadData()
-    }
-    
-    func delNote(index: Int) {
-        notesArray.remove(at: index)
-        
-    }
 }
 
-extension NotesViewController: UITableViewDataSource, UITableViewDelegate {
+extension NotesViewController: UITableViewDataSource, UITableViewDelegate, DataControllerDelegate {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        let notesCount = notesArray.count
+        let notesCount = notes.count
         
         if notesCount > 0 {
             notesLabel.isHidden = true
@@ -59,7 +48,9 @@ extension NotesViewController: UITableViewDataSource, UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "NoteCell", for: indexPath) as UITableViewCell
-        cell.textLabel?.text = notesArray[indexPath.row]
+        
+        let note = notes[indexPath.row]
+        cell.textLabel?.text = note.text
         return cell
     }
     
@@ -71,9 +62,14 @@ extension NotesViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         
         if editingStyle == .delete {
-            delNote(index: indexPath.row)
-            tableView.deleteRows(at: [indexPath], with: .fade)
+           dataController.modify(note: notes[indexPath.row], task: .del)
         }
+    }
+    
+    // переход segue по нажатию на ячейку таблицы
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+       performSegue(withIdentifier: "EditNoteSegue", sender: indexPath.row)
     }
     
     // добавляем футер
@@ -84,6 +80,25 @@ extension NotesViewController: UITableViewDataSource, UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
         return UIView()
+    }
+    
+    func dataSourceChanged(dataSource: [Note]?, error: Error?) {
+       // распаковываем массив
+        if let notes = dataSource {
+            self.notes = notes
+            notesTable.reloadData()
+        }
+    }
+    // функция вызывается, каждый раз, когда хотим перейти на новый класс
+   override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+    if let composeVC = segue.destination as? ComposeNoteViewController {
+        if segue.identifier == "EditNoteSegue" {
+             composeVC.dataController = dataController
+            if let index  = sender as? Int {
+                composeVC.note = notes[index]
+            }
+        }
+         }
     }
     
 }

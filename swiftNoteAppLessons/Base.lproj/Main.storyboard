@@ -50,7 +50,7 @@
                                     <barButtonItem style="plain" systemItem="flexibleSpace" id="xkc-wu-cZN"/>
                                     <barButtonItem systemItem="compose" id="gWN-pf-m8A">
                                         <connections>
-                                            <action selector="composeButton:" destination="BYZ-38-t0r" id="zS3-1y-RYD"/>
+                                            <action selector="composeButton:" destination="BYZ-38-t0r" id="7ks-Mq-Beh"/>
                                         </connections>
                                     </barButtonItem>
                                 </items>
@@ -63,11 +63,44 @@
                     <connections>
                         <outlet property="notesLabel" destination="50f-vz-Kdo" id="G3S-XC-60S"/>
                         <outlet property="notesTable" destination="Q8N-EO-pSQ" id="WpS-is-lvv"/>
+                        <segue destination="5vr-nn-Zwc" kind="show" identifier="EditNoteSegue" id="WSN-Hv-egj"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="896.79999999999995" y="792.95352323838085"/>
+        </scene>
+        <!--Compose Note View Controller-->
+        <scene sceneID="JAa-k0-aGb">
+            <objects>
+                <viewController id="5vr-nn-Zwc" customClass="ComposeNoteViewController" customModule="swiftNoteAppLessons" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="aDG-Ls-flL">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="Spb-SW-wfB">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                            </textView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="Spb-SW-wfB" firstAttribute="leading" secondItem="7kS-JG-fPO" secondAttribute="leading" id="U0l-kU-baG"/>
+                            <constraint firstItem="Spb-SW-wfB" firstAttribute="trailing" secondItem="7kS-JG-fPO" secondAttribute="trailing" id="Z08-M9-vI0"/>
+                            <constraint firstItem="Spb-SW-wfB" firstAttribute="top" secondItem="aDG-Ls-flL" secondAttribute="top" id="bJn-wE-6EC"/>
+                            <constraint firstItem="Spb-SW-wfB" firstAttribute="bottom" secondItem="7kS-JG-fPO" secondAttribute="bottom" id="c4f-8w-RPt"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="7kS-JG-fPO"/>
+                    </view>
+                    <connections>
+                        <outlet property="noteTextView" destination="Spb-SW-wfB" id="iAK-UE-Bic"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="vFK-Ab-YcD" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1637.5999999999999" y="792.95352323838085"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="wIM-ez-i1g">
