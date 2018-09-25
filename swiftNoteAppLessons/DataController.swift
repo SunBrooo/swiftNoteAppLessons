@@ -21,9 +21,14 @@ protocol DataControllerDelegate {
 class DataController {
     var notes:[Note] = []
     
+    
     var delegate: DataControllerDelegate?
+    var modifyNotesQueue = OperationQueue()
     
     func getNote(){
+        
+        let fetchNotes = GetNotesOperations()
+        
         self.delegate?.dataSourceChanged(dataSource: self.notes, error: nil)
     }
     
@@ -45,6 +50,10 @@ class DataController {
             }
         
             self.delegate?.dataSourceChanged(dataSource: notes, error: nil)
+        
+            let modification = ModifyNoteOperations(modification: task, note: note)
+            modifyNotesQueue.addOperation(modification)
+        
        
     }
 }
